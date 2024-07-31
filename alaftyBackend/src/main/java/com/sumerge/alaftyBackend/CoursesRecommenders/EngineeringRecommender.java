@@ -14,7 +14,7 @@ public class EngineeringRecommender implements CourseRecommender {
 
     public List<Course> recommendedCourses() {
         System.out.println("Engineering courses");
-        return List.of(new Course("E1"), new Course("E2"));
+        return List.of(new Course(), new Course());
     }
 
 }
