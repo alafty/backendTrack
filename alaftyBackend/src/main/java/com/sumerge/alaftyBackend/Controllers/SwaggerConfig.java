@@ -32,12 +32,12 @@ public class SwaggerConfig {
     private ApiInfo metaInfo() {
 
         ApiInfo apiInfo = new ApiInfo(
-                "Atividades API REST",
-                "API REST de cadastro de atividades.",
+                "Alafty's Backend REST API",
+                "The official documentation of Alafty's backend RESTFUL Service task",
                 "1.0",
                 "Terms of Service",
-                new Contact("João VR", "www.una.br/",
-                        " "),
+                new Contact("Mohamed El-Alafty", "www.sumerge.com/",
+                        "mmustafa@sumerge.com"),
                 "Apache License Version 2.0",
                 "https://www.apache.org/licesen.html", new ArrayList<VendorExtension>()
         );
