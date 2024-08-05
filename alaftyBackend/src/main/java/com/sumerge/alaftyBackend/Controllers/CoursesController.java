@@ -28,6 +28,12 @@ public class CoursesController {
         return courseService.getCourse(Integer.parseInt(id));
     }
 
+    @GetMapping("view/{pageNumber}/")
+    public List getAllCourses(@PathVariable int pageNumber, @RequestParam int pageSize) {
+        return courseService.getAllCourses(pageNumber, pageSize);
+    }
+
+
     @GetMapping("discover/")
     public List<Course> getAllCourses() {
         return courseService.getRecommendedCourses();
