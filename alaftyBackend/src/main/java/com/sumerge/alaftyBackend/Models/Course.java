@@ -28,6 +28,18 @@ public class Course {
         this.authors = authors;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
     public Course() {
 
     }
