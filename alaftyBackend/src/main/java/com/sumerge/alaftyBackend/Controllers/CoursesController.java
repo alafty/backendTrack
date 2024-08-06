@@ -1,6 +1,7 @@
 package com.sumerge.alaftyBackend.Controllers;
 
 import com.sumerge.alaftyBackend.Models.Course;
+import com.sumerge.alaftyBackend.Models.CourseDto;
 import com.sumerge.alaftyBackend.Services.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("courses/")
 public class CoursesController {
 
     private CourseService courseService;
@@ -24,18 +25,24 @@ public class CoursesController {
     }
 
     @GetMapping("view/{id}/")
-    public Course getCourse(@PathVariable String id) {
+    public CourseDto getCourse(@PathVariable String id) {
+        System.out.println(id);
         return courseService.getCourse(Integer.parseInt(id));
     }
 
-    @GetMapping("view/{pageNumber}/")
+    @GetMapping("view/{description}")
+    public CourseDto getCourseByDescription(@PathVariable String description) {
+        return courseService.getCourseByDescription(description);
+    }
+
+    @GetMapping("view/all/{pageNumber}/")
     public List getAllCourses(@PathVariable int pageNumber, @RequestParam int pageSize) {
         return courseService.getAllCourses(pageNumber, pageSize);
     }
 
 
     @GetMapping("discover/")
-    public List<Course> getAllCourses() {
+    public List<Course> getRecommendedCourses() {
         return courseService.getRecommendedCourses();
     }
 
@@ -50,7 +57,7 @@ public class CoursesController {
     }
 
     @PostMapping("add/")
-    public boolean addCourse(@RequestBody Course course) {
+    public boolean addCourse(@RequestBody CourseDto course) {
         try {
             courseService.addCourse(course);
         } catch (Exception e) {
