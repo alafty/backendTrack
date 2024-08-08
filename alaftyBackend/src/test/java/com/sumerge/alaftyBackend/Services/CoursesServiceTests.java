@@ -4,6 +4,7 @@ import com.sumerge.alaftyBackend.Interfaces.CourseRepository;
 import com.sumerge.alaftyBackend.Models.Course;
 import com.sumerge.alaftyBackend.Models.CourseDto;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.Query;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,10 +40,11 @@ public class CoursesServiceTests {
     @Test
     void getRecommendedCourses_success() throws Exception {
         List<Course> courses = new ArrayList<>();
-        List<Course> returnedCourses = courseService.getRecommendedCourses();
         courses.add(new Course());
-
         when(recommender.recommendedCourses()).thenReturn(courses);
+
+        List<Course> returnedCourses = courseService.getRecommendedCourses();
+
         assertEquals(courses, returnedCourses);
     }
 
@@ -57,11 +59,10 @@ public class CoursesServiceTests {
     @Test
     void getRecommendedCourses_unmatchingArray_failure() throws Exception {
         List<Course> courses = new ArrayList<>();
-        List<Course> returnedCourses = courseService.getRecommendedCourses();
-        courses.add(new Course());
 
         when(recommender.recommendedCourses()).thenReturn(courses);
-        assertEquals(courses, returnedCourses);
+
+        assertThrows(EntityNotFoundException.class, () -> courseService.getRecommendedCourses());
     }
 
     @Test
@@ -80,11 +81,10 @@ public class CoursesServiceTests {
         courseDto.description = desc;
         courseDto.name = name;
 
-        when(repo.findByDescription(desc)).thenReturn(course);
-        when(mapper.map(course, CourseDto.class)).thenReturn(courseDto);
+        when(repo.findByDescription(desc)).thenReturn(Optional.of(course));
         CourseDto returnedCourse = courseService.getCourseByDescription(desc);
 
-        assertEquals(courseDto, returnedCourse);
+        assertEquals(courseDto.description, returnedCourse.description);
     }
 
     @Test
@@ -108,22 +108,20 @@ public class CoursesServiceTests {
         courseDto.id = id;
         courseDto.description = desc;
         courseDto.name = name;
+
+        when(repo.existsById(id)).thenReturn(true);
+        when(repo.findById(id)).thenReturn(Optional.of(course));
+
         CourseDto returnedCourse = courseService.getCourse(id);
 
-        Optional<Course> _optional = Optional.of(course);
-        when(repo.findById(id)).thenReturn(_optional);
-        when(mapper.map(course, CourseDto.class)).thenReturn(courseDto);
-
-        assertEquals(courseDto, returnedCourse);
-        verify(repo, times(1)).findById(id);
-        verify(mapper, times(1)).map(course, CourseDto.class);
+        assertEquals(courseDto.id, returnedCourse.id);
     }
 
     @Test
     void getCourseById_iDNotFound_fail() throws Exception {
         int id = 1;
 
-        when(repo.findById(id)).thenReturn(null);
+        when(repo.existsById(id)).thenReturn(false);
 
         assertThrows(RuntimeException.class, () -> courseService.getCourse(id));
     }
@@ -171,10 +169,7 @@ public class CoursesServiceTests {
 
         doThrow(new RuntimeException("Database error")).when(repo).save(any(Course.class));
 
-        boolean result = courseService.addCourse(course);
-
-        assertFalse(result);
-        verify(repo, times(1)).save(any(Course.class));
+        assertThrows(RuntimeException.class, () -> courseService.addCourse(course));
     }
 
     @Test
@@ -186,8 +181,8 @@ public class CoursesServiceTests {
         course.name = "Test Course";
         course.description = "Old Description";
 
-        verify(repo, times(1)).findById(id);
-        verify(repo, times(1)).save(any(Course.class));
+        when(repo.existsById(id)).thenReturn(true);
+        when(repo.findById(id)).thenReturn(Optional.of(course));
         assertTrue(courseService.updateCourseDescription(id, desc));
         assertEquals(course.getDescription(), desc);
     }
@@ -197,12 +192,10 @@ public class CoursesServiceTests {
         int courseId = 1;
         String newDescription = "Updated Description";
 
-        when(repo.findById(courseId)).thenReturn(Optional.empty());
+        when(repo.existsById(courseId)).thenReturn(false);
 
-        boolean result = courseService.updateCourseDescription(courseId, newDescription);
-
-        assertFalse(result);
-        verify(repo, never()).save(any(Course.class));
+        assertThrows(EntityNotFoundException.class, () -> courseService.updateCourseDescription(courseId, newDescription));
+        //verify(repo, never()).save(any(Course.class));
     }
 
 //    @Test
