@@ -4,7 +4,9 @@ import com.sumerge.alaftyBackend.Models.Course;
 import com.sumerge.alaftyBackend.Models.CourseDto;
 import com.sumerge.alaftyBackend.Services.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -20,58 +22,62 @@ public class CoursesController {
     }
 
     @GetMapping("/error")
-    public String error() {
+    public String getError() {
         return "error";
     }
 
-    @GetMapping("view/{id}/")
+    @GetMapping("view/byID/{id}")
     public CourseDto getCourse(@PathVariable String id) {
-        System.out.println(id);
-        return courseService.getCourse(Integer.parseInt(id));
+        CourseDto _tempCourse = courseService.getCourse(Integer.parseInt(id));
+        if(_tempCourse == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        return _tempCourse;
     }
 
     @GetMapping("view/{description}")
     public CourseDto getCourseByDescription(@PathVariable String description) {
-        return courseService.getCourseByDescription(description);
+        CourseDto _tempCourse =  courseService.getCourseByDescription(description);
+        if(_tempCourse == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        return _tempCourse;
     }
 
-    @GetMapping("view/all/{pageNumber}/")
-    public List getAllCourses(@PathVariable int pageNumber, @RequestParam int pageSize) {
-        return courseService.getAllCourses(pageNumber, pageSize);
-    }
+//    @GetMapping("view/all/{pageNumber}/")
+//    public List getAllCourses(@PathVariable int pageNumber, @RequestParam int pageSize) {
+//        return courseService.getAllCourses(pageNumber, pageSize);
+//    }
 
 
     @GetMapping("discover/")
     public List<Course> getRecommendedCourses() {
+        if(courseService.getRecommendedCourses() == null || courseService.getRecommendedCourses().size() == 0){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
         return courseService.getRecommendedCourses();
     }
 
     @PutMapping("update/{id}")
-    public boolean updateCourseDescription(@PathVariable int id, @RequestBody String  newDescription) {
-        try {
-            courseService.updateCourseDescription(id, newDescription);
-        } catch (Exception e) {
-            return false;
+    public boolean updateCourseDescription(@PathVariable int id, @RequestBody String newDescription) {
+        if(courseService.updateCourseDescription(id, newDescription)){
+            return true;
         }
-        return true;
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found");
     }
 
     @PostMapping("add/")
-    public boolean addCourse(@RequestBody CourseDto course) {
-        try {
-            courseService.addCourse(course);
-        } catch (Exception e) {
-            return false;
+    public boolean addCourse(@RequestBody Course course) {
+        if(!courseService.addCourse(course)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course already exists");
         }
         return true;
     }
 
     @DeleteMapping("delete/{id}")
     public boolean deleteCourse(@PathVariable String id) {
-        try {
-            courseService.deleteCourse(Integer.parseInt(id));
-        } catch (Exception e) {
-            return false;
+        if(!courseService.deleteCourse(Integer.parseInt(id))){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return true;
     }
