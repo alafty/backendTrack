@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,7 +43,12 @@ public class CoursesControllerTests {
     @Test
     void getCourse_id_success() throws Exception {
         int course_id = 13;
-        when(courseService.getCourse(course_id)).thenReturn(new CourseDto());
+        CourseDto dummy = new CourseDto();
+        dummy.setId(course_id);
+        dummy.setName("Dummy");
+        dummy.setDescription("Dummy Description");
+
+        when(courseService.getCourse(course_id)).thenReturn(dummy);
         mockMvc.perform(get(base_URI+"view/byID/{id}", course_id))
                 .andExpect(status().isOk());
 
@@ -60,7 +66,11 @@ public class CoursesControllerTests {
     @Test
     void getCourseByDescription_success() throws Exception {
         String description = "test";
-        when(courseService.getCourseByDescription(description)).thenReturn(new CourseDto());
+        CourseDto dummy = new CourseDto();
+        dummy.setId(1);
+        dummy.setName("Dummy");
+        dummy.setDescription("Dummy Description");
+        when(courseService.getCourseByDescription(description)).thenReturn(dummy);
         mockMvc.perform(get(base_URI+"view/{description}", description))
                 .andExpect(status().isOk());
     }
@@ -177,6 +187,13 @@ public class CoursesControllerTests {
         int course_id = 13;
         Course course = new Course();
         course.id = course_id;
+        course.ratings = 1;
+        course.name = "name";
+        course.description = "description";
+        course.credit = 4;
+        course.assessment = 10;
+        course.authors = 5;
+
 
         String body = objectMapper.writeValueAsString(course);
         when(courseService.addCourse(course)).thenReturn(true);
