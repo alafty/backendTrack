@@ -48,12 +48,12 @@ public class CourseService {
         return modelMapper.map(_course, CourseDto.class);
     }
 
-    public List getAllCourses(int pageNumber, int pageSize) {
-        Query query = entityManager.createQuery(findAllQuery);
-        query.setFirstResult((pageNumber-1) * pageSize);
-        query.setMaxResults(pageSize);
-        return query.getResultList();
-    }
+//    public List getAllCourses(int pageNumber, int pageSize) {
+//        Query query = entityManager.createQuery(findAllQuery);
+//        query.setFirstResult((pageNumber-1) * pageSize);
+//        query.setMaxResults(pageSize);
+//        return query.getResultList();
+//    }
 
     public CourseDto getCourse(int id) {
         Optional<Course> _temp = coursesRepo.findById(id);
@@ -65,21 +65,25 @@ public class CourseService {
         return null;
     }
 
-    public void deleteCourse(int id) {
+    public boolean deleteCourse(int id) {
+        coursesRepo.existsById(id);
         coursesRepo.deleteById(id);
+        return true;
     }
 
-    public void addCourse(CourseDto courseDto) {
-        Course course = modelMapper.map(courseDto, Course.class);
+    public boolean addCourse(Course course) {
         coursesRepo.save(course);
+        return true;
     }
 
-    public void updateCourseDescription(int id, String description ) {
+    public boolean updateCourseDescription(int id, String description ) {
         Optional<Course> _temp = coursesRepo.findById(id);
         if(_temp.isPresent()) {
             Course _c = _temp.get();
             _c.description = description;
             coursesRepo.save(_c);
+            return true;
         }
+        return false;
     }
 }
