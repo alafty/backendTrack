@@ -21,7 +21,7 @@ import java.util.List;
 @SpringBootApplication
 public class AlaftyBackendTasksApplication {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception{
 		ConfigurableApplicationContext app = SpringApplication.run(AlaftyBackendTasksApplication.class, args);
 		CourseService _cS = app.getBean("courseService", CourseService.class);
 		BookingService _bS = app.getBean("bookingService", BookingService.class);
