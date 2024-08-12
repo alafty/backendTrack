@@ -23,13 +23,7 @@ public class AlaftyBackendTasksApplication {
 
 	public static void main(String[] args) throws Exception{
 		ConfigurableApplicationContext app = SpringApplication.run(AlaftyBackendTasksApplication.class, args);
-		CourseService _cS = app.getBean("courseService", CourseService.class);
-		BookingService _bS = app.getBean("bookingService", BookingService.class);
-		SessionService _lPS = app.getBean("sessionService", SessionService.class);
 
-		_cS.getRecommendedCourses();
-		_bS.getRecommendedBookings();
-		_lPS.getRecommendedSessions();
 	}
 
 	@Component
@@ -42,20 +36,6 @@ public class AlaftyBackendTasksApplication {
 		}
 		@Override
 		public void run(String... args) throws Exception {
-			Course dummy_1 = new Course(1, "c1", "firstCourse", 4, 2, 1, 1);
-			Course dummy_2 = new Course(2, "c2", "secondCourse", 3, 1, 3, 2);
-			Course dummy_3 = new Course(3, "c3", "thirdCourse", 2, 3, 4, 3);
-
-
-//			_courseService.addCourse(dummy_1);
-//			_courseService.addCourse(dummy_2);
-//			_courseService.addCourse(dummy_3);
-
-//			_courseService.deleteCourse(dummy_1.id);
-
-//			System.out.println(_courseService.getCourse(2).name);
-
-			_courseService.updateCourseDescription(dummy_3.id, "FifthCourse");
 
 		}
 	}
