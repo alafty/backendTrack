@@ -58,12 +58,12 @@ public class CourseService {
         return courseDto;
     }
 
-//    public List getAllCourses(int pageNumber, int pageSize) {
-//        Query query = entityManager.createQuery(findAllQuery);
-//        query.setFirstResult((pageNumber-1) * pageSize);
-//        query.setMaxResults(pageSize);
-//        return query.getResultList();
-//    }
+    public List getAllCourses(int pageNumber, int pageSize) {
+        Query query = entityManager.createQuery(findAllQuery);
+        query.setFirstResult((pageNumber-1) * pageSize);
+        query.setMaxResults(pageSize);
+        return query.getResultList();
+    }
 
     public CourseDto getCourse(int id) throws RuntimeException {
         if(!coursesRepo.existsById(id)) {
