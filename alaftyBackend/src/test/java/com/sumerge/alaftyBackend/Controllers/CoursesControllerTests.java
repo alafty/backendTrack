@@ -184,7 +184,7 @@ public class CoursesControllerTests {
 
     @Test
     void addCourse_withBody_success() throws Exception {
-        int course_id = 13;
+        int course_id = 223;
         Course course = new Course();
         course.id = course_id;
         course.ratings = 1;

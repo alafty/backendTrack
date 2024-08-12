@@ -52,10 +52,10 @@ public class CoursesController {
         return _tempCourse;
     }
 
-//    @GetMapping("view/all/{pageNumber}/")
-//    public List getAllCourses(@PathVariable int pageNumber, @RequestParam int pageSize) {
-//        return courseService.getAllCourses(pageNumber, pageSize);
-//    }
+    @GetMapping("view/all/{pageNumber}/")
+    public List getAllCourses(@PathVariable int pageNumber, @RequestParam int pageSize) {
+        return courseService.getAllCourses(pageNumber, pageSize);
+    }
 
 
     @GetMapping("discover/")
@@ -83,6 +83,7 @@ public class CoursesController {
             throw new IllegalArgumentException("Course Data Missing");
         }
         boolean result = courseService.addCourse(course);
+        System.out.println(result);
         if(!result){
             throw new EntityExistsException("Course Already Exists");
         }
