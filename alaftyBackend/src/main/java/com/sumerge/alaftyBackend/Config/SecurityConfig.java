@@ -17,7 +17,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 
 @Configuration
-@Order(Ordered.LOWEST_PRECEDENCE)
 public class SecurityConfig {
 
     private final UserDetailsServiceImpl userDetailsServiceImpl;
