@@ -7,9 +7,11 @@ import com.sumerge.alaftyBackend.Models.Course;
 import com.sumerge.alaftyBackend.Services.BookingService;
 import com.sumerge.alaftyBackend.Services.CourseService;
 import com.sumerge.alaftyBackend.Services.SessionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -20,6 +22,8 @@ import java.util.List;
 
 @SpringBootApplication
 public class AlaftyBackendTasksApplication {
+
+
 
 	public static void main(String[] args) throws Exception{
 		ConfigurableApplicationContext app = SpringApplication.run(AlaftyBackendTasksApplication.class, args);
