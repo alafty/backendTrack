@@ -79,7 +79,7 @@ public class CoursesController {
 
     @PostMapping("add/")
     public void addCourse(@RequestBody Course course) {
-        if(course.description == null || course.name == null || course.authors == 0 || course.assessment == 0 || course.credit == 0 || course.ratings == 0){
+        if(course.description == null || course.name == null || course.authors == null || course.assessment == null || course.credit == 0 || course.ratings == null){
             throw new IllegalArgumentException("Course Data Missing");
         }
         boolean result = courseService.addCourse(course);
