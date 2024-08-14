@@ -1,0 +1,28 @@
+USE dockerDatabase;
+--
+-- -- Insert Authors
+-- INSERT INTO author (id, name, email, birth_date) VALUES
+--                                                      (2, 'John Doe', 'john.doe@example.com', '1980-05-15'),
+--                                                      (3, 'Jane Smith', 'jane.smith@example.com', '1990-07-20');
+--
+-- -- Insert Assessments
+-- INSERT INTO assessment (id, content) VALUES
+--                                          (3, 'Final exam for Spring Boot course'),
+--                                          (2, 'Midterm exam for Java course');
+--
+-- -- Insert Courses
+-- INSERT INTO course (id, name, description, credit, assessment_id) VALUES
+--                                                                       (3, 'Spring Boot Basics', 'Introduction to Spring Boot', 3, 1),
+--                                                                       (2, 'Advanced Java', 'Deep dive into Java programming', 4, 2);
+--
+-- -- Insert Ratings
+-- INSERT INTO rating (id, number) VALUES
+--                                                (4, 5),
+--                                                (2, 4),
+--                                                (3, 3);
+--
+-- -- Insert Course-Author Relationships
+-- INSERT INTO course_authors (course_id, authors_id) VALUES
+--                                                       (1, 1),
+--                                                       (2, 2),
+--                                                       (1, 2);
